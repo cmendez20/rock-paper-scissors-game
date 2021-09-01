@@ -1,6 +1,6 @@
 const computerPlay = function () {
   // Generates a random number from 0 - 2
-  let randChoice = Math.floor(Math.random() * 3);
+  let randChoice = Math.floor(Math.random() * (2 - 0) + 1);
 
   // Generates Computer Play from an array of possible choices using randNum as an index
   const computerChoices = ['rock', 'paper', 'scissors'];
@@ -30,22 +30,60 @@ const playRound = function (playerSelection, computerSelection) {
   }
 };
 
+const buttons = document.querySelectorAll('button');
+const resultsDiv = document.querySelector('.results');
+const displayComputerWins = document.querySelector('.computerWins');
+const displayPlayerWins = document.querySelector('.playerWins');
+
 const game = function () {
   let playerWins = 0;
   let computerWins = 0;
   let draw = 0;
   let computerSelection;
   let playerSelection;
-  const buttons = document.querySelectorAll('button');
 
+  // buttons.forEach(button => button.addEventListener('click', button => (playerSelection = button.target.textContent)));
   computerSelection = computerPlay();
-  buttons.forEach(button => button.addEventListener('click', button => (playerSelection = button.target.textContent)));
+  console.log(computerSelection);
 
-  buttons.forEach(button => button.addEventListener('click', playRound));
+  buttons.forEach(button =>
+    button.addEventListener('click', function (e) {
+      resultsDiv.textContent = '';
+      playerSelection = this.textContent;
+      // console.log(this.textContent);
+      console.log(playerSelection);
+      console.log(computerSelection);
+      const playerSelectionLowerCase = playerSelection.toLowerCase();
 
-  // console.log(i);
-  console.log({ playerSelection });
-  console.log({ computerSelection });
+      // console.log(playerSelectionLowerCase);
+      // console.log(computerSelection);
+      if (
+        (playerSelectionLowerCase === 'rock' && computerSelection === 'paper') ||
+        (playerSelectionLowerCase === 'scissors' && computerSelection === 'rock') ||
+        (playerSelectionLowerCase === 'paper' && computerSelection === 'scissors')
+      ) {
+        computerWins++;
+        resultsDiv.textContent += `You lose! ${computerSelection} beats ${playerSelection}.`;
+        displayComputerWins.textContent = `Computer's Score: ${computerWins}`;
+        checkWinner(computerWins, playerWins);
+      } else if (
+        (computerSelection === 'rock' && playerSelectionLowerCase === 'paper') ||
+        (computerSelection === 'scissors' && playerSelectionLowerCase === 'rock') ||
+        (computerSelection === 'paper' && playerSelectionLowerCase === 'scissors')
+      ) {
+        playerWins++;
+        resultsDiv.textContent += `You win! ${playerSelection} beats ${computerSelection}.`;
+        displayPlayerWins.textContent = `Player's Score: ${playerWins}`;
+        checkWinner(computerWins, playerWins);
+      } else {
+        draw++;
+        resultsDiv.textContent += "It's a tie!";
+      }
+    })
+  );
+
+  // console.log({ playerSelection });
+  // console.log({ computerSelection });
   // if (playRound(playerSelection, computerSelection) === 'computer') {
   //   computerWins++;
   //   console.log(`You lose! ${computerSelection} beats ${playerSelection}.`);
@@ -61,15 +99,23 @@ const game = function () {
   console.log(checkWinner(playerWins, computerWins));
 };
 
-const checkWinner = function (playerWins, computerWins) {
-  if (playerWins > computerWins) {
-    return 'You win!';
-  } else if (computerWins > playerWins) {
-    return 'You lose! The computer won :(';
-  } else {
-    return "It's a tie, no one wins";
+const checkWinner = (computerScore, playerScore) => {
+  if (computerScore > playerScore && computerScore === 5) {
+    resultsDiv.textContent = 'Game over! The computer won :(';
+  } else if (playerScore > computerScore && playerScore === 5) {
+    resultsDiv.textContent = 'You win!';
   }
 };
+
+// function (score) {
+//   if (playerWins > computerWins) {
+//     return 'You win!';
+//   } else if (computerWins > playerWins) {
+//     return 'You lose! The computer won :(';
+//   } else {
+//     return "It's a tie, no one wins";
+//   }
+// };
 
 // computer's selection;
 // const computerSelection = computerPlay();
