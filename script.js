@@ -1,10 +1,10 @@
 const computerPlay = function () {
   // Generates a random number from 0 - 2
-  let randChoice = Math.floor(Math.random() * (2 - 0) + 1);
+  let randChoice = Math.floor(Math.random() * 3);
 
   // Generates Computer Play from an array of possible choices using randNum as an index
   const computerChoices = ['rock', 'paper', 'scissors'];
-  // console.log(computerChoices[randChoice]);
+  console.log(computerChoices[randChoice]);
   return computerChoices[randChoice];
 };
 
@@ -48,6 +48,7 @@ const game = function () {
 
   buttons.forEach(button =>
     button.addEventListener('click', function (e) {
+      computerSelection = computerPlay();
       resultsDiv.textContent = '';
       playerSelection = this.textContent;
       // console.log(this.textContent);
@@ -103,7 +104,7 @@ const checkWinner = (computerScore, playerScore) => {
   if (computerScore > playerScore && computerScore === 5) {
     resultsDiv.textContent = 'Game over! The computer won :(';
   } else if (playerScore > computerScore && playerScore === 5) {
-    resultsDiv.textContent = 'You win!';
+    resultsDiv.textContent = 'You won!';
   }
 };
 
